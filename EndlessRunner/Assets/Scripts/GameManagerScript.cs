@@ -17,9 +17,10 @@ public class GameManagerScript : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI hiScoreText;
     public Button startGameButton;
-
+    public TextMeshProUGUI startGameText;
+    private bool isGameRunning;
+    private bool isGameStarted;
     private float score;
-    private bool onGameStart;
 
 
     // Start is called before the first frame update
@@ -32,6 +33,8 @@ public class GameManagerScript : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
+
+
         
     }
 
@@ -47,9 +50,24 @@ public class GameManagerScript : MonoBehaviour
     {
         frogScript = FindObjectOfType<FrogScript>();
         spawner = FindObjectOfType<Spawner>();
-        onGameStart = true;
         PlayerPrefs.SetFloat("hiscore", 0f);
-        NewGame();
+        DisplayStartScreen();
+      //  NewGame();
+        
+    }
+
+    private void DisplayStartScreen()
+    {
+        gameSpeed = 0f;
+        score = 0f;
+        isGameRunning = false;
+        isGameStarted = false;  // Reset the flag
+
+        gameOverText.gameObject.SetActive(false);
+        startGameButton.gameObject.SetActive(false);
+        startGameText.gameObject.SetActive(true); 
+        frogScript.gameObject.SetActive(true);
+        spawner.gameObject.SetActive(false);
     }
 
     public void NewGame()
@@ -62,11 +80,12 @@ public class GameManagerScript : MonoBehaviour
        
         gameSpeed = initGameSpeed;
         score = 0f;
-        
+        isGameRunning = true;
         enabled = true;
         gameOverText.gameObject.SetActive(false);
         startGameButton.gameObject.SetActive(false);
         frogScript.gameObject.SetActive(true);
+        startGameText.gameObject.SetActive(false);
         spawner.gameObject.SetActive(true);
         updateHighScore();
     }
@@ -74,20 +93,27 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameSpeed += gameSpeedIncrease * Time.deltaTime;
-        score += gameSpeed * Time.deltaTime;
-        scoreText.text = Mathf.FloorToInt(score).ToString("D5");
+        if (isGameRunning)
+        {
+            gameSpeed += gameSpeedIncrease * Time.deltaTime;
+            score += gameSpeed * Time.deltaTime;
+            scoreText.text = Mathf.FloorToInt(score).ToString("D5");
+        }
+        else if (!isGameStarted && !isGameRunning && Input.GetKeyDown(KeyCode.Space))
+        {
+            NewGame();
+        }
     }
 
     public void gameOver()
     {
         gameSpeed = 0f;
         enabled = false;
+        isGameRunning = false;
         frogScript.gameObject.SetActive(false);
         spawner.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(true);
         startGameButton.gameObject.SetActive(true);
-        onGameStart = false;
         updateHighScore();
     }
 

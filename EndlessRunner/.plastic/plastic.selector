@@ -1,0 +1,4 @@
+repository "EndlessRunner@mitramonita@cloud"
+  path "/"
+    br "/main"
+    co "/main"
