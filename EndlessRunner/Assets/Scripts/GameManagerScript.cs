@@ -52,8 +52,7 @@ public class GameManagerScript : MonoBehaviour
         spawner = FindObjectOfType<Spawner>();
         PlayerPrefs.SetFloat("hiscore", 0f);
         DisplayStartScreen();
-      //  NewGame();
-        
+
     }
 
     private void DisplayStartScreen()
@@ -61,7 +60,7 @@ public class GameManagerScript : MonoBehaviour
         gameSpeed = 0f;
         score = 0f;
         isGameRunning = false;
-        isGameStarted = false;  // Reset the flag
+        isGameStarted = false;
 
         gameOverText.gameObject.SetActive(false);
         startGameButton.gameObject.SetActive(false);

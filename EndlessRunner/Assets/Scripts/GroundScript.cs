@@ -6,12 +6,6 @@ public class GroundScript : MonoBehaviour
 {
     private MeshRenderer myMeshRenderer;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void Awake()
     {
         myMeshRenderer = GetComponent<MeshRenderer>();
